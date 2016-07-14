@@ -57,13 +57,13 @@ namespace Midi2Beep
                 Velocity = int.Parse(velocity);
             }
 
-            public MidiCommand ToMidiCommand()
+            public BeepCommand ToBeepCommand()
             {
-                return new MidiCommand();
+                return new BeepCommand();
             }
         }
 
-        struct MidiCommand
+        struct BeepCommand
         {
             /// <summary>
             /// 音高
@@ -75,16 +75,16 @@ namespace Midi2Beep
             /// </summary>
             public int AbsTime { get; }
 
-            public MidiCommand(string note, string absTime)
+            public BeepCommand(string note, string absTime)
             {
                 Note = int.Parse(note);
                 AbsTime = int.Parse(absTime);
             }
         }
 
-        class MidiCommandByNoteComparer : IComparer<MidiCommand>
+        class MidiCommandByNoteComparer : IComparer<RawMidiCommand>
         {
-            public int Compare(MidiCommand x, MidiCommand y)
+            public int Compare(RawMidiCommand x, RawMidiCommand y)
             {
                 return x.Note.CompareTo(y.Note);
             }
@@ -120,14 +120,14 @@ namespace Midi2Beep
                         }
                         : new RawMidiCommand[] { };
                 });
-            SortedSet<MidiCommand> currentCmdSet = new SortedSet<MidiCommand>(new MidiCommandByNoteComparer());
-            List<MidiCommand> cmds = new List<MidiCommand>();
+            SortedSet<RawMidiCommand> currentCmdSet = new SortedSet<RawMidiCommand>(new MidiCommandByNoteComparer());
+            List<BeepCommand> cmds = new List<BeepCommand>();
             foreach (var item in midiData)
             {
-                MidiCommand current = currentCmdSet.Max;
+                RawMidiCommand current = currentCmdSet.Max;
                 if (item.isNoteOn)
                 {
-                    currentCmdSet.Add(item.ToMidiCommand());
+                    currentCmdSet.Add(item);
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace Midi2Beep
                 }
                 // 结束的时候插入到列表中。
                 if (current.Note != currentCmdSet.Max.Note)
-                    cmds.Add(current);
+                    cmds.Add(current.ToBeepCommand());
             }
         }
     }
