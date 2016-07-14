@@ -56,12 +56,23 @@ namespace Midi2Beep
                 Note = int.Parse(note);
                 Velocity = int.Parse(velocity);
             }
+
+            public MidiCommand ToMidiCommand()
+            {
+                return new MidiCommand();
+            }
         }
 
         struct MidiCommand
         {
+            /// <summary>
+            /// 音高
+            /// </summary>
             public int Note { get; }
 
+            /// <summary>
+            /// 绝对时间
+            /// </summary>
             public int AbsTime { get; }
 
             public MidiCommand(string note, string absTime)
@@ -70,6 +81,15 @@ namespace Midi2Beep
                 AbsTime = int.Parse(absTime);
             }
         }
+
+        class MidiCommandByNoteComparer : IComparer<MidiCommand>
+        {
+            public int Compare(MidiCommand x, MidiCommand y)
+            {
+                return x.Note.CompareTo(y.Note);
+            }
+        }
+
         static void Main(string[] args)
         {
             //Stream input = Console.OpenStandardInput();
@@ -100,10 +120,22 @@ namespace Midi2Beep
                         }
                         : new RawMidiCommand[] { };
                 });
-            SortedSet<MidiCommand> cmds = new SortedSet<MidiCommand>();
+            SortedSet<MidiCommand> currentCmdSet = new SortedSet<MidiCommand>(new MidiCommandByNoteComparer());
+            List<MidiCommand> cmds = new List<MidiCommand>();
             foreach (var item in midiData)
             {
-                //TODO
+                MidiCommand current = currentCmdSet.Max;
+                if (item.isNoteOn)
+                {
+                    currentCmdSet.Add(item.ToMidiCommand());
+                }
+                else
+                {
+                    currentCmdSet.RemoveWhere(midiCommand => midiCommand.Note == item.Note);
+                }
+                // 结束的时候插入到列表中。
+                if (current.Note != currentCmdSet.Max.Note)
+                    cmds.Add(current);
             }
         }
     }
