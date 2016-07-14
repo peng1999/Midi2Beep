@@ -57,6 +57,11 @@ namespace Midi2Beep
                 if (current.Note != currentCmdSet.Max.Note)
                     cmds.Add(current.ToBeepCommand());
             }
+
+            foreach (var cmd in cmds)
+            {
+                Console.WriteLine($"{cmd:CPP}");
+            }
         }
     }
 }

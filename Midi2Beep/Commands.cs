@@ -59,7 +59,7 @@ namespace Midi2Beep
         }
     }
 
-    struct BeepCommand
+    struct BeepCommand : IFormattable
     {
         /// <summary>
         /// 音高
@@ -75,6 +75,22 @@ namespace Midi2Beep
         {
             Note = int.Parse(note);
             AbsTime = int.Parse(absTime);
+        }
+
+        public override string ToString()
+        {
+            return string.Format($"{this:CPP}");
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            switch (format)
+            {
+                case "CPP":
+                    return $"beep({Note}, {AbsTime});";
+                default:
+                    return base.ToString();
+            }
         }
     }
 
