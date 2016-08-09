@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Midi2Beep
             //Stream input = Console.OpenStandardInput();
             string line;
             List<string> midi = new List<string>();
-            while (string.IsNullOrEmpty(line = Console.ReadLine()))
+            while (!string.IsNullOrEmpty(line = Console.ReadLine()))
             {
                 midi.Add(line);
             }
@@ -41,22 +41,30 @@ namespace Midi2Beep
                         : new RawMidiCommand[] { };
                 });
             SortedSet<RawMidiCommand> currentCmdSet = new SortedSet<RawMidiCommand>(new MidiCommandByNoteComparer());
+            currentCmdSet.Add(new RawMidiCommand());
             List<BeepCommand> cmds = new List<BeepCommand>();
-            foreach (var item in midiData)
+            foreach (var current in midiData)
             {
-                RawMidiCommand current = currentCmdSet.Max;
-                if (item.isNoteOn)
+                RawMidiCommand prev = currentCmdSet.Max;
+                // 维护 currentCmdSet 性质
+                if (current.IsNoteOn)
                 {
-                    currentCmdSet.Add(item);
+                    currentCmdSet.Add(current);
                 }
                 else
                 {
-                    currentCmdSet.RemoveWhere(midiCommand => midiCommand.Note == item.Note);
+                    currentCmdSet.RemoveWhere(midiCommand => midiCommand.Note == current.Note);
                 }
                 // 结束的时候插入到列表中。
-                if (current.Note != currentCmdSet.Max.Note)
-                    cmds.Add(current.ToBeepCommand());
+                // On -> [Off]
+                // Off || [On]
+                if (prev.Note != currentCmdSet.Max.Note)
+                {
+                    cmds.Add(prev.ToBeepCommand(current.AbsTime));
+                }
             }
+
+            //List<BeepCommand> cmds = 
 
             foreach (var cmd in cmds)
             {
