@@ -10,7 +10,14 @@ namespace Midi2Beep
     {
         public static int NoteToFrequency(int note)
         {
-            return (int)((440 / 32) * (Math.Pow(2, ((note - 9) / 12))));
+            if (note != 0)
+            {
+                return (int)((440 / 32) * (Math.Pow(2, ((note - 9) / 12))));
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }
