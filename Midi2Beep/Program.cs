@@ -71,7 +71,8 @@ namespace Midi2Beep
                 // Off || [On]
                 if (max != currentCmdSet.Max)
                 {
-                    cmds.Add(new BeepCommand(max.Note, current.AbsTime - prev.AbsTime));
+                    if (current.AbsTime - prev.AbsTime != 0)
+                        cmds.Add(new BeepCommand(max.Note, current.AbsTime - prev.AbsTime));
                     prev = current;
                 }
             }
