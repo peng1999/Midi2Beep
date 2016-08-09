@@ -53,9 +53,10 @@ namespace Midi2Beep
             SortedSet<RawMidiCommand> currentCmdSet = new SortedSet<RawMidiCommand>(new MidiCommandByNoteComparer());
             currentCmdSet.Add(new RawMidiCommand());
             List<BeepCommand> cmds = new List<BeepCommand>();
+            RawMidiCommand prev = new RawMidiCommand();
             foreach (var current in midiData)
             {
-                RawMidiCommand prev = currentCmdSet.Max;
+                RawMidiCommand max = currentCmdSet.Max;
                 // 维护 currentCmdSet 性质
                 if (current.IsNoteOn)
                 {
@@ -68,9 +69,10 @@ namespace Midi2Beep
                 // 结束的时候插入到列表中。
                 // On -> [Off]
                 // Off || [On]
-                if (prev.Note != currentCmdSet.Max.Note)
+                if (max.Note != currentCmdSet.Max.Note)
                 {
-                    cmds.Add(prev.ToBeepCommand(current.AbsTime));
+                    cmds.Add(new BeepCommand(max.Note, current.AbsTime - prev.AbsTime));
+                    prev = current;
                 }
             }
 
