@@ -114,7 +114,7 @@ namespace Midi2Beep
                     }
                     else
                     {
-                        return $"beep 0 0 /s {TimeSpan}\r\n";
+                        return $"beep 1 1 /s {TimeSpan}\r\n";
                     }
                 default:
                     return base.ToString();
