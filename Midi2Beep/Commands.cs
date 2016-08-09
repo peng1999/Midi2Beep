@@ -95,6 +95,15 @@ namespace Midi2Beep
                     {
                         return $"sleep({TimeSpan});";
                     }
+                case "BAT":
+                    if (Frequency != -1)
+                    {
+                        return $"beep {Frequency}, {TimeSpan}\r\n";
+                    }
+                    else
+                    {
+                        return $"beep 0 0 /s {TimeSpan}\r\n";
+                    }
                 default:
                     return base.ToString();
             }
