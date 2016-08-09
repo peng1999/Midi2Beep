@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,7 +64,7 @@ namespace Midi2Beep
         /// <summary>
         /// 音高
         /// </summary>
-        public int Note { get; }
+        public int Frequency { get; }
 
         /// <summary>
         /// 绝对时间
@@ -73,7 +73,7 @@ namespace Midi2Beep
 
         public BeepCommand(int note, int timeSpan)
         {
-            Note = note;
+            Frequency = Utils.NoteToFrequency(note);
             TimeSpan = timeSpan;
         }
 
@@ -87,7 +87,7 @@ namespace Midi2Beep
             switch (format)
             {
                 case "CPP":
-                    return $"beep({Note}, {TimeSpan});";
+                    return $"beep({Frequency}, {TimeSpan});";
                 default:
                     return base.ToString();
             }
