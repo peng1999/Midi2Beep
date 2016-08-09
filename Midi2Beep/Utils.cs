@@ -12,7 +12,7 @@ namespace Midi2Beep
         {
             if (note != 0)
             {
-                return (int)((440 / 32) * (Math.Pow(2, ((note - 9) / 12))));
+                return (int)((440D / 32D) * (Math.Pow(2, ((double)note - 9D) / 12D)));
             }
             else
             {
