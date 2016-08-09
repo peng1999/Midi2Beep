@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,7 +43,7 @@ namespace Midi2Beep
         /// </summary>
         public int Velocity { get; }
 
-        public bool isNoteOn => Velocity == 0;
+        public bool IsNoteOn => Velocity > 0;
 
         public RawMidiCommand(string channel, string absTime, string note, string velocity)
         {
@@ -53,9 +53,9 @@ namespace Midi2Beep
             Velocity = int.Parse(velocity);
         }
 
-        public BeepCommand ToBeepCommand()
+        public BeepCommand ToBeepCommand(int endTime)
         {
-            return new BeepCommand();
+            return new BeepCommand(note: Note, timeSpan: endTime - AbsTime);
         }
     }
 
@@ -69,12 +69,12 @@ namespace Midi2Beep
         /// <summary>
         /// 绝对时间
         /// </summary>
-        public int AbsTime { get; }
+        public int TimeSpan { get; }
 
-        public BeepCommand(string note, string absTime)
+        public BeepCommand(int note, int timeSpan)
         {
-            Note = int.Parse(note);
-            AbsTime = int.Parse(absTime);
+            Note = note;
+            TimeSpan = timeSpan;
         }
 
         public override string ToString()
@@ -87,7 +87,7 @@ namespace Midi2Beep
             switch (format)
             {
                 case "CPP":
-                    return $"beep({Note}, {AbsTime});";
+                    return $"beep({Note}, {TimeSpan});";
                 default:
                     return base.ToString();
             }
