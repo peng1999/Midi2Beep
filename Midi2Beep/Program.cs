@@ -76,9 +76,14 @@ namespace Midi2Beep
 
             //List<BeepCommand> cmds = 
 
+            string format = "BAT";
+            if (args.Length > 1)
+            {
+                format = args[1];
+            }
             foreach (var cmd in cmds)
             {
-                Console.WriteLine($"{cmd:CPP}");
+                Console.WriteLine(string.Format($"{{0:{format}}}", cmd));
             }
         }
     }
