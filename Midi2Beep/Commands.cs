@@ -57,6 +57,18 @@ namespace Midi2Beep
         {
             return new BeepCommand(note: Note, timeSpan: endTime - AbsTime);
         }
+
+        public static bool operator == (RawMidiCommand lhs, RawMidiCommand rhs)
+        {
+            return lhs.AbsTime == rhs.AbsTime
+                && lhs.Note == rhs.Note 
+                && lhs.Velocity == rhs.Velocity;
+        }
+
+        public static bool operator != (RawMidiCommand lhs, RawMidiCommand rhs)
+        {
+            return !(lhs == rhs);
+        }
     }
 
     struct BeepCommand : IFormattable

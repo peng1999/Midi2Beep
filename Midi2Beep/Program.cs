@@ -69,7 +69,7 @@ namespace Midi2Beep
                 // 结束的时候插入到列表中。
                 // On -> [Off]
                 // Off || [On]
-                if (max.Note != currentCmdSet.Max.Note)
+                if (max != currentCmdSet.Max)
                 {
                     cmds.Add(new BeepCommand(max.Note, current.AbsTime - prev.AbsTime));
                     prev = current;
