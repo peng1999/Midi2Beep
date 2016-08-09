@@ -110,11 +110,11 @@ namespace Midi2Beep
                 case "BAT":
                     if (Frequency != -1)
                     {
-                        return $"beep {Frequency} {TimeSpan}\r\n";
+                        return $"beep {Frequency} {TimeSpan}";
                     }
                     else
                     {
-                        return $"beep 1 1 /s {TimeSpan}\r\n";
+                        return $"beep 1 1 /s {TimeSpan}";
                     }
                 default:
                     return base.ToString();
