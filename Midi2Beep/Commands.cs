@@ -87,7 +87,14 @@ namespace Midi2Beep
             switch (format)
             {
                 case "CPP":
-                    return $"beep({Frequency}, {TimeSpan});";
+                    if (Frequency != -1)
+                    {
+                        return $"beep({Frequency}, {TimeSpan});";
+                    }
+                    else
+                    {
+                        return $"sleep({TimeSpan});";
+                    }
                 default:
                     return base.ToString();
             }

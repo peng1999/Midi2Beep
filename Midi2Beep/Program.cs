@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +13,12 @@ namespace Midi2Beep
         static void Main(string[] args)
         {
             //Stream input = Console.OpenStandardInput();
+            // bool extractChannel = false;
+            IEnumerable<int> channels = null;
+            if (args.Length > 0)
+            {
+                channels = args[0].Split(',').Select(str => int.Parse(str));
+            }
             string line;
             List<string> midi = new List<string>();
             while (!string.IsNullOrEmpty(line = Console.ReadLine()))
@@ -40,6 +46,10 @@ namespace Midi2Beep
                         }
                         : new RawMidiCommand[] { };
                 });
+            if (channels != null)
+            {
+                midiData = midiData.Where(cmd => channels.Contains(cmd.Channel));
+            }
             SortedSet<RawMidiCommand> currentCmdSet = new SortedSet<RawMidiCommand>(new MidiCommandByNoteComparer());
             currentCmdSet.Add(new RawMidiCommand());
             List<BeepCommand> cmds = new List<BeepCommand>();
