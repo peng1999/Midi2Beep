@@ -98,7 +98,7 @@ namespace Midi2Beep
                 case "BAT":
                     if (Frequency != -1)
                     {
-                        return $"beep {Frequency}, {TimeSpan}\r\n";
+                        return $"beep {Frequency} {TimeSpan}\r\n";
                     }
                     else
                     {
