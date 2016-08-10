@@ -53,11 +53,6 @@ namespace Midi2Beep
             Velocity = int.Parse(velocity);
         }
 
-        public BeepCommand ToBeepCommand(int endTime)
-        {
-            return new BeepCommand(note: Note, timeSpan: endTime - AbsTime);
-        }
-
         public static bool operator == (RawMidiCommand lhs, RawMidiCommand rhs)
         {
             return lhs.AbsTime == rhs.AbsTime

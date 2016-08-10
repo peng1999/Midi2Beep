@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Midi2Beep
 {
-    class Utils
+    static class Utils
     {
         public static int? NoteToFrequency(int note)
         {

@@ -77,8 +77,6 @@ namespace Midi2Beep
                 }
             }
 
-            //List<BeepCommand> cmds = 
-
             string format = "BAT";
             if (args.Length > 1)
             {
