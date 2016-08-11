@@ -43,14 +43,23 @@ namespace Midi2Beep
         /// </summary>
         public int Velocity { get; }
 
-        public bool IsNoteOn => Velocity > 0;
+        public bool IsNoteOn { get; }
 
-        public RawMidiCommand(string channel, string absTime, string note, string velocity)
+
+        public RawMidiCommand(string channel, string absTime, string note, string velocity, bool isNoteOn)
         {
             Channel = int.Parse(channel);
             AbsTime = int.Parse(absTime);
             Note = int.Parse(note);
             Velocity = int.Parse(velocity);
+            if (Velocity != 0)
+            {
+                IsNoteOn = isNoteOn;
+            }
+            else
+            {
+                IsNoteOn = false;
+            }
         }
 
         public BeepCommand ToBeepCommand(int endTime)

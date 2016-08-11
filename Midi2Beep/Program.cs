@@ -38,8 +38,7 @@ namespace Midi2Beep
                             (
                                 channel: m.Groups[1].Value,
                                 absTime: m.Groups[2].Value,
-                                // 我们不需要这一行
-                                // IsNoteOn = m.Groups[3].Value == "on",
+                                isNoteOn: m.Groups[3].Value == "on",
                                 note: m.Groups[4].Value,
                                 velocity: m.Groups[5].Value
                             )
