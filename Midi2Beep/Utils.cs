@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Midi2Beep
 {
-    class Utils
+    static class Utils
     {
-        public static int NoteToFrequency(int note)
+        public static int? NoteToFrequency(int note)
         {
             if (note != 0)
             {
@@ -16,7 +16,7 @@ namespace Midi2Beep
             }
             else
             {
-                return -1;
+                return null;
             }
         }
     }

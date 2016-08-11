@@ -62,11 +62,6 @@ namespace Midi2Beep
             }
         }
 
-        public BeepCommand ToBeepCommand(int endTime)
-        {
-            return new BeepCommand(note: Note, timeSpan: endTime - AbsTime);
-        }
-
         public static bool operator == (RawMidiCommand lhs, RawMidiCommand rhs)
         {
             return lhs.AbsTime == rhs.AbsTime
@@ -85,7 +80,7 @@ namespace Midi2Beep
         /// <summary>
         /// 音高
         /// </summary>
-        public int Frequency { get; }
+        public int? Frequency { get; }
 
         /// <summary>
         /// 绝对时间
@@ -108,7 +103,7 @@ namespace Midi2Beep
             switch (format)
             {
                 case "CPP":
-                    if (Frequency != -1)
+                    if (Frequency != null)
                     {
                         return $"beep({Frequency}, {TimeSpan});";
                     }
@@ -117,7 +112,7 @@ namespace Midi2Beep
                         return $"sleep({TimeSpan});";
                     }
                 case "BAT":
-                    if (Frequency != -1)
+                    if (Frequency != null)
                     {
                         return $"beep {Frequency} {TimeSpan}";
                     }
