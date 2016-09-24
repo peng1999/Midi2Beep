@@ -120,6 +120,15 @@ namespace Midi2Beep
                     {
                         return $"beep 1 1 /s {TimeSpan}";
                     }
+                case "ARRAY":
+                    if (Frequency != null)
+                    {
+                        return $"{{{Frequency}, {TimeSpan}}},";
+                    }
+                    else
+                    {
+                        return $"{{0,{TimeSpan}}},";
+                    }
                 default:
                     return base.ToString();
             }
